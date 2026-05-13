@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2015 Adobe
+ * All Rights Reserved.
+ */
+-->
+<!-- TODO remove this file as soon as enhanced checkout is implemented -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            
+        </referenceBlock>
+    </body>
+</page>

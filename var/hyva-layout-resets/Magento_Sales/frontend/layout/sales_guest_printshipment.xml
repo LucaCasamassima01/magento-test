@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2013 Adobe
+ * All Rights Reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="sales_order_print_shipment_renderers"/>
+    <update handle="print"/>
+    <body>
+        <attribute name="class" value="sales-guest-view"/>
+        <referenceContainer name="page.main.title">
+            
+            
+        </referenceContainer>
+        <referenceContainer name="content">
+            
+        </referenceContainer>
+    </body>
+</page>
