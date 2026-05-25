@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- LIST -->
+    <route url="/V1/product-notes" method="GET">
+        <service class="Codestorm\ProductNotes\Api\ProductNoteManagementInterface"
+                 method="getCustomerNotes"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- GET BY ID -->
+    <route url="/V1/product-notes/:noteId" method="GET">
+        <service class="Codestorm\ProductNotes\Api\ProductNoteManagementInterface"
+                 method="getById"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- CREATE -->
+    <route url="/V1/product-notes" method="POST">
+        <service class="Codestorm\ProductNotes\Api\ProductNoteManagementInterface"
+                 method="create"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- UPDATE -->
+    <route url="/V1/product-notes/:noteId" method="PUT">
+        <service class="Codestorm\ProductNotes\Api\ProductNoteManagementInterface"
+                 method="update"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- DELETE -->
+    <route url="/V1/product-notes/:noteId" method="DELETE">
+        <service class="Codestorm\ProductNotes\Api\ProductNoteManagementInterface"
+                 method="delete"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+</routes>

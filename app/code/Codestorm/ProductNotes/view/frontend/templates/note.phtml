@@ -51,6 +51,8 @@
     <div class="product-note">
         <h3 class="product-note__title">Product Note</h3>
 
+        <div id="product-note-container"></div>
+
         <form class="product-note__form"
               action="<?= $block->getUrl('productnotes/note/save') ?>"
               method="post">
@@ -82,4 +84,15 @@
 
         </form>
     </div>
+
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Codestorm_ProductNotes/js/load-note": {
+                "productId": "<?= (int)$block->getProduct()->getId() ?>"
+            }
+        }
+    }
+    </script>
+
 <?php endif; ?>

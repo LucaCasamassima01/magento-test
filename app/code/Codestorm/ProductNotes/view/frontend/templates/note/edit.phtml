@@ -1,0 +1,40 @@
+<?php $note = $block->getNote(); ?>
+<style>
+    .product-note__button {
+            padding: 8px 14px;
+            border: none;
+            background: #2d6cdf;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+</style>
+
+<form method="post"
+      action="<?= $block->getUrl('productnotes/note/save') ?>">
+
+    <?= $block->getBlockHtml('formkey') ?>
+
+    <input type="hidden" name="note_id" value="<?= (int)$note->getData('note_id') ?>" />
+    
+    <div>
+        <label>
+            Product ID: 
+            <?= (int)$note->getProductId() ?>
+        </label>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Content:</label><br>
+        <textarea name="content" rows="6" cols="50"><?= $block->escapeHtml($note->getContent()) ?></textarea>
+    </div>
+
+    <br>
+
+    <button class="product-note__button" type="submit">
+        Save
+    </button>
+</form>

@@ -27,19 +27,45 @@ class Save extends Action
 }
 
     public function execute()
-    {
-        if (!$this->customerSession->isLoggedIn()) {
-            return $this->_redirect('customer/account/login');
+{
+    if (!$this->customerSession->isLoggedIn()) {
+        return $this->_redirect('customer/account/login');
+    }
+
+    $noteId = (int)$this->getRequest()->getParam('note_id');
+    $productId = (int)$this->getRequest()->getParam('product_id');
+    $content = trim((string)$this->getRequest()->getParam('content'));
+
+    if (!$content || (!$noteId && !$productId)) {
+        $this->messageManager->addErrorMessage(__('Invalid data'));
+        return $this->_redirect('*/*/index');
+    }
+
+    try {
+
+        // =========================
+        // 🔵 UPDATE FLOW
+        // =========================
+        if ($noteId) {
+
+            $note = $this->repository->getById($noteId);
+
+            // 🔒 ownership check
+            if ((int)$note->getCustomerId() !== (int)$this->customerSession->getCustomerId()) {
+                throw new \Exception(__('Not allowed'));
+            }
+
+            $note->setContent($content);
+            $this->repository->save($note);
+
+            $this->messageManager->addSuccessMessage(__('Note updated successfully'));
+
+            return $this->_redirect('*/*/index');
         }
 
-        $productId = (int)$this->getRequest()->getParam('product_id');
-        $content = trim($this->getRequest()->getParam('content'));
-
-        if (!$productId || !$content) {
-            $this->messageManager->addErrorMessage(__('Invalid data'));
-            return $this->_redirect('/');
-        }
-
+        // =========================
+        // 🟢 CREATE FLOW
+        // =========================
         $note = $this->noteFactory->create();
         $note->setCustomerId($this->customerSession->getCustomerId());
         $note->setProductId($productId);
@@ -47,10 +73,15 @@ class Save extends Action
 
         $this->repository->save($note);
 
-        $this->messageManager->addSuccessMessage(__('Note saved successfully'));
+        $this->messageManager->addSuccessMessage(__('Note created successfully'));
 
         return $this->_redirect('catalog/product/view', [
             'id' => $productId
         ]);
+
+    } catch (\Exception $e) {
+        $this->messageManager->addErrorMessage($e->getMessage());
+        return $this->_redirect('*/*/index');
     }
+}
 }

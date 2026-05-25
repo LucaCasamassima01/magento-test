@@ -7,14 +7,18 @@ use Codestorm\ProductNotes\Api\Data\ProductNoteInterface;
 
 class ProductNote extends AbstractModel implements ProductNoteInterface
 {
-    protected function _construct()
+    protected function _construct(): void
     {
-        $this->_init(\Codestorm\ProductNotes\Model\ResourceModel\ProductNote::class);
+        $this->_init(
+            \Codestorm\ProductNotes\Model\ResourceModel\ProductNote::class
+        );
     }
 
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->getData(self::NOTE_ID);
+        $id = $this->getData(self::NOTE_ID);
+
+        return $id !== null ? (int)$id : null;
     }
 
     public function setId($id)
@@ -22,9 +26,9 @@ class ProductNote extends AbstractModel implements ProductNoteInterface
         return $this->setData(self::NOTE_ID, $id);
     }
 
-    public function getCustomerId()
+    public function getCustomerId(): int
     {
-        return $this->getData(self::CUSTOMER_ID);
+        return (int)$this->getData(self::CUSTOMER_ID);
     }
 
     public function setCustomerId($id)
@@ -32,9 +36,9 @@ class ProductNote extends AbstractModel implements ProductNoteInterface
         return $this->setData(self::CUSTOMER_ID, $id);
     }
 
-    public function getProductId()
+    public function getProductId(): int
     {
-        return $this->getData(self::PRODUCT_ID);
+        return (int)$this->getData(self::PRODUCT_ID);
     }
 
     public function setProductId($id)
@@ -42,9 +46,9 @@ class ProductNote extends AbstractModel implements ProductNoteInterface
         return $this->setData(self::PRODUCT_ID, $id);
     }
 
-    public function getContent()
+    public function getContent(): string
     {
-        return $this->getData(self::CONTENT);
+        return (string)$this->getData(self::CONTENT);
     }
 
     public function setContent($content)
