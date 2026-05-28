@@ -43,14 +43,11 @@ class Save extends Action
 
     try {
 
-        // =========================
-        // 🔵 UPDATE FLOW
-        // =========================
+        
         if ($noteId) {
 
             $note = $this->repository->getById($noteId);
 
-            // 🔒 ownership check
             if ((int)$note->getCustomerId() !== (int)$this->customerSession->getCustomerId()) {
                 throw new \Exception(__('Not allowed'));
             }
@@ -63,9 +60,7 @@ class Save extends Action
             return $this->_redirect('*/*/index');
         }
 
-        // =========================
-        // 🟢 CREATE FLOW
-        // =========================
+       
         $note = $this->noteFactory->create();
         $note->setCustomerId($this->customerSession->getCustomerId());
         $note->setProductId($productId);

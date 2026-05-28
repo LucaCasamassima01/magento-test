@@ -47,3 +47,4 @@ interface ProductNoteManagementInterface
      */
     public function delete($noteId);
 }
+

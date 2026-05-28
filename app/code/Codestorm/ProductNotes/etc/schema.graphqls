@@ -1,0 +1,44 @@
+type ProductNote {
+    note_id: Int
+    product_id: Int
+    content: String
+    created_at: String
+}
+
+type Query {
+    customerProductNotes: [ProductNote]
+    @resolver(
+        class: "Codestorm\\ProductNotes\\Model\\Resolver\\GetCustomerNotes"
+    )
+
+    productNote(noteId: Int!): ProductNote
+    @resolver(
+        class: "Codestorm\\ProductNotes\\Model\\Resolver\\GetNoteById"
+    )
+}
+
+type Mutation {
+
+    createProductNote(
+        productId: Int!
+        content: String!
+    ): ProductNote
+    @resolver(
+        class: "Codestorm\\ProductNotes\\Model\\Resolver\\CreateProductNote"
+    )
+
+    updateProductNote(
+        noteId: Int!
+        content: String!
+    ): ProductNote
+    @resolver(
+        class: "Codestorm\\ProductNotes\\Model\\Resolver\\UpdateProductNote"
+    )
+
+    deleteProductNote(
+        noteId: Int!
+    ): Boolean
+    @resolver(
+        class: "Codestorm\\ProductNotes\\Model\\Resolver\\DeleteProductNote"
+    )
+}

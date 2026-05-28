@@ -1,4 +1,10 @@
-<?php $notes = $block->getNotes(); ?>
+<div class="product-notes">
+    <h2>My Product Notes</h2>
+
+    <div id="product-notes-container">
+        <div class="empty-state">Loading...</div>
+    </div>
+</div>
 
 <style>
     .product-notes {
@@ -70,56 +76,109 @@
     }
 </style>
 
-<div class="product-notes">
-    <h2>My Product Notes</h2>
+<script>
+async function loadNotes() {
 
-    <?php if ($notes->getSize()): ?>
-        <table class="notes-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Note</th>
-                    <th>Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+    const container = document.getElementById('product-notes-container');
 
-            <tbody>
-            <?php foreach ($notes as $note): ?>
-                <tr>
-                    <td>
-                        <span class="badge">
-                            #<?= (int)$note->getProductId(); ?>
-                        </span>
-                    </td>
+    try {
+        const response = await fetch('/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer <?= $block->getCustomerToken() ?>'
+            },
+            body: JSON.stringify({
+                query: `
+                    query {
+                        customerProductNotes {
+                            note_id
+                            product_id
+                            content
+                            created_at
+                        }
+                    }
+                `
+            })
+        });
 
-                    <td>
-                        <?= $block->escapeHtml($note->getContent()); ?>
-                    </td>
+        const json = await response.json();
 
-                    <td>
-                        <?= $note->getCreatedAt(); ?>
-                    </td>
+        const notes = json?.data?.customerProductNotes || [];
 
-                    <td>
-                        <a class="action-link"
-                           href="<?= $block->getUrl('productnotes/note/edit', ['id' => $note->getData('note_id')]) ?>">
-                            Edit
-                        </a>
+        if (!notes.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    No notes found.
+                </div>
+            `;
+            return;
+        }
 
-                        <a class="action-link"
-                           href="<?= $block->getUrl('productnotes/note/delete', ['id' => $note->getData('note_id')]) ?>"
-                           onclick="return confirm('Are you sure you want to delete this note?')">
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <div class="empty-state">
-            No notes found.
-        </div>
-    <?php endif; ?>
-</div>
+        container.innerHTML = `
+            <table class="notes-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Note</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${notes.map(note => `
+                        <tr>
+                            <td>
+                                <span class="badge">
+                                    #${note.product_id}
+                                </span>
+                            </td>
+
+                            <td>
+                                ${escapeHtml(note.content ?? '')}
+                            </td>
+
+                            <td>
+                                ${note.created_at ?? ''}
+                            </td>
+
+                            <td>
+                                <a class="action-link"
+                                   href="/productnotes/note/edit/id/${note.note_id}">
+                                    Edit
+                                </a>
+
+                                <a class="action-link"
+                                   href="/productnotes/note/delete/id/${note.note_id}"
+                                   onclick="return confirm('Are you sure you want to delete this note?')">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+
+    } catch (e) {
+        container.innerHTML = `
+            <div class="empty-state">
+                Error loading notes.
+            </div>
+        `;
+        console.error(e);
+    }
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+loadNotes();
+</script>
