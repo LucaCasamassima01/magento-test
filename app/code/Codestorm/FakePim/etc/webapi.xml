@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi/etc/webapi.xsd">
+
+    <route url="/V1/integration/product/:sku" method="GET">
+        <service class="Codestorm\FakePim\Api\ProductManagementInterface" method="get"/>
+
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/integration/product/:sku" method="POST">
+        <service class="Codestorm\FakePim\Api\ProductManagementInterface" method="upsert"/>
+
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/integration/product/:sku/price" method="POST">
+        <service class="Codestorm\FakePim\Api\ProductManagementInterface" method="updatePrice"/>
+
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/integration/product/:sku/stock" method="POST">
+        <service class="Codestorm\FakePim\Api\ProductManagementInterface" method="updateStock"/>
+
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+</routes>

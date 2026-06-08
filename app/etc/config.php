@@ -379,6 +379,7 @@ return [
         'Magento_WishlistAnalytics' => 1,
         'Magento_WishlistGraphQl' => 1,
         'Magento_WishlistSampleData' => 1,
+        'Codestorm_FakePim' => 1,
         'Codestorm_ProductNotes' => 1,
         'Hyva_Theme' => 1,
         'Hyva_CompatModuleFallback' => 1,
